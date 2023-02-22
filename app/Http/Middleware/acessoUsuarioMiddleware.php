@@ -16,6 +16,28 @@ class acessoUsuarioMiddleware
      */
     public function handle(Request $request, Closure $next)
     {
-        return $next($request);
+        $usuario_comum = auth('api')->user();
+
+        if($usuario_comum == null) {
+
+            return response()->json(['msg' => 'Invalid OR Expired Token'], 401);
+        }
+
+        if($usuario_comum->status === 'desativado') {
+
+            return response()->json(['msg' => 'your account has a problem or is disabled contact support'], 401);
+        }
+
+        if($usuario_comum){
+
+            if(($usuario_comum->nivel_acesso === 'usuario' || $usuario_comum->nivel_acesso === 'adm') && $usuario_comum->status === 'ativado') {
+                return $next($request);
+            }
+            // elseif($usuario_comum->nivel_acesso == 'adm'){
+            //     return response()->json(['msg' => 'Token não pode acessar essa Rota'], 401);
+            // }
+
+        }
+
     }
 }

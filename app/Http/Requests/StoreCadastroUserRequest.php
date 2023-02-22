@@ -40,7 +40,7 @@ class StoreCadastroUserRequest extends FormRequest
         }elseif($platform == 'app'){
 
             return [
-                'id_token_google' => 'required',
+                'id_token_google' => 'required|unique:users,id_token_google',
                 'email' => 'email:rfc,dns|required|unique:users,email',
 
             ];

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Requests\StoreCadastroUserRequest;
 use App\Models\User;
+use Tymon\JWTAuth\Facades\JWTAuth;
 
 class AuthController extends Controller
 {
@@ -13,28 +14,55 @@ class AuthController extends Controller
     public function login(Request $request){
 
         $email = $request->input('email');
+        $password = $request->input('password');
+        $id_token_google = $request->input('id_token_google');
 
-        $user = User::where('email', $email)->where('status', 'ativado')->first();
+        $userDesktop = User::where('email', $email)->where('status', 'ativado')->first();
+        $userMobile = User::where('id_token_google', $id_token_google)->where('status', 'ativado')->first();
 
-        $credenciais = $request->all(['email','password']);
+        if($userDesktop && $userMobile == null && $password){
 
-        // autenticação (email e senha)
-        $token = auth('api')->attempt($credenciais);
+            $credenciais = $request->all(['email','password']);
 
-        if($token){
+            // autenticação (email e senha)
+            $token = auth('api')->attempt($credenciais);
 
-            return response()->json(['token' => $token], 200);
+            if($token){
+
+                return response()->json(['token' => $token, 'user' => $userDesktop], 201);
+
+            }else{
+
+                return response()->json(['error' => 'Invalid username or password'], 403);
+                // 401 = Unauthorized -> não autorixado
+                // 403 = forbidden -> proibido (login invalido) 
+
+            }
+
+        }elseif($userMobile){
+
+            $token = JWTAuth::fromUser($userMobile);
+            // dd('userMobile',$token,$userMobile);
+            if($token){
+
+                return response()->json(['token' => $token, 'usuario' => $userMobile], 201);
+
+            }else{
+
+                return response()->json(['error' => 'Invalid username or password'], 403);
+                // 401 = Unauthorized -> não autorixado
+                // 403 = forbidden -> proibido (login invalido) 
+
+            }
 
         }else{
 
-            return response()->json(['error' => 'Invalid username or password'], 403);
+            return response()->json(['error' => 'be missing some parameter to be passed'], 403);
             // 401 = Unauthorized -> não autorixado
-            // 403 = forbidden -> proibido (login invalido)
-        }
-    }
+            // 403 = forbidden -> proibido (login invalido) 
 
-    public function logout(){
-        dd('logout');
+        }
+
     }
 
     public function store(StoreCadastroUserRequest $request){
@@ -73,10 +101,20 @@ class AuthController extends Controller
 
         }
 
-        return response()->json(['message' => 'Cadastrado com Sucesso'], 200);
+        return response()->json(['msg' => 'Registered successfully'], 201);
 
 
     }
+
+    public function logout(){
+
+        auth('api')->logout();
+        return response()->json(['msg' => 'Logout was successful'], 201);
+
+    }
+
+    // teste de rotas
+
     public function adm(){
 
         $user = auth()->user();

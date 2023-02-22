@@ -20,16 +20,21 @@ class acessoAdmMiddleware
 
         if($usuario_adm == null) {
 
-            return response()->json(['msg' => 'Token invalido OU Expirado'], 401);
+            return response()->json(['msg' => 'Invalid OR Expired Token'], 401);
+        }
+
+        if($usuario_adm->status === 'desativado') {
+
+            return response()->json(['msg' => 'your account has a problem or is disabled contact support'], 401);
         }
 
         if($usuario_adm){
 
-            if($usuario_adm->nivel_acesso === 'adm' && $usuario_adm->status === 'ativo') {
+            if($usuario_adm->nivel_acesso === 'adm' && $usuario_adm->status === 'ativado') {
                 return $next($request);
             }
             elseif($usuario_adm->nivel_acesso == 'usuario'){
-                return response()->json(['msg' => 'Token não pode acessar essa Rota'], 401);
+                return response()->json(['msg' => 'Token cannot access this Route'], 401);
             }
 
         }

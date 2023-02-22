@@ -41,11 +41,11 @@ Route::post('login', [AuthController::class, 'login']);
 Route::post('logout', [AuthController::class, 'logout']);
 
 // adm
-Route::middleware('log.acesso','jwt.auth')->prefix('adm/')->group(function(){
+Route::middleware('acesso.adm','jwt.auth','log.acesso')->prefix('adm/')->group(function(){
     Route::post('adm', [AuthController::class, 'adm']);
 });
 
 // usuario
-Route::middleware('log.acesso','jwt.auth')->prefix('usuario/')->group(function(){
+Route::middleware('acesso.usuario','jwt.auth','log.acesso')->prefix('usuario/')->group(function(){
     Route::post('usuario', [AuthController::class, 'usuario']);
 });
