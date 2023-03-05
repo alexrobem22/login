@@ -34,21 +34,23 @@ class StoreCadastroUserRequest extends FormRequest
                 'name' => 'required|min:4',
                 'email' => 'email:rfc,dns|required|unique:users,email',
                 'password' => 'required|min:4|max:10',
-                'password_confirmation' => 'required|min:4|max:10|same:password'
+                'password_confirmation' => 'required|min:4|max:10|same:password',
+                'user_image' => 'numeric|between:1,8'
             ];
 
         }elseif($platform == 'app'){
 
             return [
                 'id_token_google' => 'required|unique:users,id_token_google',
-                'email' => 'email:rfc,dns|required|unique:users,email',
+                'email' => 'email:rfc,dns|unique:users,email',
+                'user_image' => 'numeric|between:1,8'
 
             ];
 
         }else{
 
             return [
-                'platform' => 'required'
+                'platform' => 'required|in:desktop,app'
             ];
 
 
@@ -58,7 +60,9 @@ class StoreCadastroUserRequest extends FormRequest
     }
     public function messages(){
         return [
-            'platform.required' => 'the :attribute field is mandatory'
+            'platform.required' => 'the :attribute field is mandatory',
+            'platform.in' => 'It is only allowed on the desktop and APP :attribute'
+
         ];
     }
 }

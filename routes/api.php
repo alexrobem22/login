@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CadastroController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -21,10 +22,10 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 /**
  * xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
- * login
+ * CADASTRO
  * xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
  */
-Route::post('cadastro/store', [AuthController::class, 'store']);
+Route::post('cadastro/store', [CadastroController::class, 'store']);
 
 /**
  * xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -39,6 +40,18 @@ Route::post('login', [AuthController::class, 'login']);
  * xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
  */
 Route::post('logout', [AuthController::class, 'logout']);
+
+
+Route::get('index',[CadastroController::class, 'index']);
+Route::get('show/{id}',[CadastroController::class, 'show']);
+Route::post('update/{id}',[CadastroController::class, 'update']);
+Route::delete('destroy/{id}',[CadastroController::class, 'destroy']);
+
+
+
+
+
+
 
 // adm
 Route::middleware('acesso.adm','jwt.auth','log.acesso')->prefix('adm/')->group(function(){

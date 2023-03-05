@@ -25,7 +25,8 @@ class User extends Authenticatable implements JWTsubject
         'id_token_google',
         'nivel_acesso',
         'status',
-        'platform'
+        'platform',
+        'user_image'
     ];
 
     /**
@@ -37,6 +38,9 @@ class User extends Authenticatable implements JWTsubject
         'password',
         'remember_token',
         'id_token_google',
+        'created_at',
+        'updated_at',
+        'email_verified_at'
     ];
 
     /**

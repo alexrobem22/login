@@ -20,7 +20,8 @@ class CreateUsersTable extends Migration
             $table->string('nivel_acesso');
             $table->string('status');
             $table->string('platform');
-            $table->timestamp('email_verified_at')->nullable();
+            $table->string('user_image');
+            // $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->string('id_token_google');
             $table->rememberToken();
