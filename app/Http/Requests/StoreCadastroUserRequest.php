@@ -5,6 +5,7 @@ namespace App\Http\Requests;
 use App\Models\User;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class StoreCadastroUserRequest extends FormRequest
 {
@@ -26,13 +27,15 @@ class StoreCadastroUserRequest extends FormRequest
      */
     public function rules(Request $request)
     {
+        
+        $email = $request->input('email');
         $platform = $request->input('platform');
 
         if($platform == 'desktop'){
 
             return [
                 'name' => 'required|min:4',
-                'email' => 'email:rfc,dns|required|unique:users,email',
+                'email' => 'required|email:rfc,dns|unique:users,email',
                 'password' => 'required|min:4|max:10',
                 'password_confirmation' => 'required|min:4|max:10|same:password',
                 'user_image' => 'numeric|between:1,8'
@@ -42,7 +45,7 @@ class StoreCadastroUserRequest extends FormRequest
 
             return [
                 'id_token_google' => 'required|unique:users,id_token_google',
-                'email' => 'email:rfc,dns|unique:users,email',
+                'email' => ($email) ? 'email:rfc,dns|unique:users,email' : '',
                 'user_image' => 'numeric|between:1,8'
 
             ];

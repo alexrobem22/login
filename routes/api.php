@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CadastroController;
+use App\Http\Controllers\acessoadm\CadastroAdmController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -41,24 +42,26 @@ Route::post('login', [AuthController::class, 'login']);
  */
 Route::post('logout', [AuthController::class, 'logout']);
 
-
-Route::get('index',[CadastroController::class, 'index']);
-Route::get('show/{id}',[CadastroController::class, 'show']);
-Route::post('update/{id}',[CadastroController::class, 'update']);
-Route::delete('destroy/{id}',[CadastroController::class, 'destroy']);
-
-
-
-
-
-
-
-// adm
+/**
+ * xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+ * ROTA DO ADM
+ * xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+ */
 Route::middleware('acesso.adm','jwt.auth','log.acesso')->prefix('adm/')->group(function(){
-    Route::post('adm', [AuthController::class, 'adm']);
+
+    Route::post('cadastro/store', [CadastroAdmController::class, 'store']);
+    Route::get('index',[CadastroAdmController::class, 'index']);
+    Route::get('show/{id}',[CadastroAdmController::class, 'show']);
+    Route::post('update/{id}',[CadastroAdmController::class, 'update']);
+    Route::delete('destroy/{id}',[CadastroAdmController::class, 'destroy']);
+
 });
 
-// usuario
+/**
+ * xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+ * ROTA DO USUARIO
+ * xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+ */
 Route::middleware('acesso.usuario','jwt.auth','log.acesso')->prefix('usuario/')->group(function(){
-    Route::post('usuario', [AuthController::class, 'usuario']);
+    
 });

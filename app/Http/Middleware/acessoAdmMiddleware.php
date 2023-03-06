@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class acessoAdmMiddleware
 {
@@ -20,12 +21,12 @@ class acessoAdmMiddleware
 
         if($usuario_adm == null) {
 
-            return response()->json(['msg' => 'Invalid OR Expired Token'], 401);
+            return response()->json(['msg' => 'Invalid OR Expired Token'], Response::HTTP_UNAUTHORIZED);
         }
 
         if($usuario_adm->status === 'desativado') {
 
-            return response()->json(['msg' => 'your account has a problem or is disabled contact support'], 401);
+            return response()->json(['msg' => 'your account has a problem or is disabled contact support'], Response::HTTP_UNAUTHORIZED);
         }
 
         if($usuario_adm){
@@ -34,7 +35,7 @@ class acessoAdmMiddleware
                 return $next($request);
             }
             elseif($usuario_adm->nivel_acesso == 'usuario'){
-                return response()->json(['msg' => 'Token cannot access this Route'], 401);
+                return response()->json(['msg' => 'Token cannot access this Route'], Response::HTTP_UNAUTHORIZED);
             }
 
         }

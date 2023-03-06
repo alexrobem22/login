@@ -26,28 +26,20 @@ class UpdateCadastroUserRequest extends FormRequest
     {
         $id = $this->route()->parameter('id');
 
-        $password = $request->input('password');
+        $name = ($request->input('name')) ? 'min:4': '';
+        $email = ($request->input('email')) ? 'email:rfc,dns|unique:users,email,'.$id : '';
+        $password = ($request->input('password')) ? 'min:4|max:10' : '';
+        $password_confirmation = ($password) ? 'min:4|max:10|same:password' : '';
 
-        if($password){
-            return [
-                'name' => 'min:4',
-                'email' => 'email:rfc,dns|unique:users,email,'.$id,
-                'password' => 'min:4|max:10',
-                'password_confirmation' => 'min:4|max:10|same:password',
-                'user_image' => 'numeric|between:1,8',
-                'nivel_acesso' => 'in:adm,usuario',
-                'status' => 'in:ativado,desativado'
-            ];
-        }else{
-            return [
-                'name' => 'min:4',
-                'email' => 'email:rfc,dns|unique:users,email,'.$id,
-                'user_image' => 'numeric|between:1,8',
-                'nivel_acesso' => 'in:adm,usuario',
-                'status' => 'in:ativado,desativado'
-            ];
-        }
-
+        return [
+            'name' => $name,
+            'email' => $email,
+            'password' => $password,
+            'password_confirmation' => $password_confirmation,
+            'user_image' => 'numeric|between:1,8',
+            'nivel_acesso' => 'in:adm,usuario',
+            'status' => 'in:ativado,desativado'
+        ];
 
     }
     // essa function eu posso personalizar a mensagem da resposta do rules

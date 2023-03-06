@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class acessoUsuarioMiddleware
 {
@@ -20,12 +21,12 @@ class acessoUsuarioMiddleware
 
         if($usuario_comum == null) {
 
-            return response()->json(['msg' => 'Invalid OR Expired Token'], 401);
+            return response()->json(['msg' => 'Invalid OR Expired Token'], Response::HTTP_UNAUTHORIZED);
         }
 
         if($usuario_comum->status === 'desativado') {
 
-            return response()->json(['msg' => 'your account has a problem or is disabled contact support'], 401);
+            return response()->json(['msg' => 'your account has a problem or is disabled contact support'], Response::HTTP_UNAUTHORIZED);
         }
 
         if($usuario_comum){

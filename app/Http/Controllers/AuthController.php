@@ -57,7 +57,7 @@ class AuthController extends Controller
 
         }else{
 
-            return response()->json(['error' => 'be missing some parameter to be passed'], Response::HTTP_FORBIDDEN);
+            return response()->json(['error' => 'some parameter to be passed is missing or your account is deactivated'], Response::HTTP_FORBIDDEN);
             // 401 = Unauthorized -> não autorixado
             // 403 = forbidden -> proibido (login invalido) 
 
@@ -72,19 +72,4 @@ class AuthController extends Controller
 
     }
 
-    // teste de rotas
-
-    public function adm(){
-
-        $user = auth()->user();
-
-        dd('adm',$user);
-    }
-
-    public function usuario(){
-
-        $user = auth()->user();
-
-        dd('usuario', $user);
-    }
 }
