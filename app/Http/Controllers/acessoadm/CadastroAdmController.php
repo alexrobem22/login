@@ -18,6 +18,37 @@ class CadastroAdmController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+    /**
+     * @OA\Tag( 
+     * name="Acesso ADM", 
+     * description="API Endpoints of Projects" 
+     * )
+     *  
+     * @OA\Get(
+     *      path="/api/adm/index",
+     *      security={{"bearerAuth": {}}},
+     *      operationId="getProjectsList",
+     *      tags={"Acesso ADM"},
+     *      summary="Get list of projects",
+     *      description="Returns list of projects",
+     *      @OA\Response(
+     *          response=200,
+     *          description="Successful operation",
+     *       ),
+     *      @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated",
+     *      ),
+     *      @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *      )
+     *     )
+     * 
+     * @return $user
+     */
+
     public function index()
     {
         //
